@@ -15,6 +15,7 @@
         "fieldset",
         "iosversion",
         "managementip",
+        "mgmt",
         "moreinfo",
         "neighbour",
         "neighbours",
@@ -26,6 +27,7 @@
         "rftag",
         "serialnumber",
         "sitetag",
+        "teemip",
         "wifi"
     ]
 }
