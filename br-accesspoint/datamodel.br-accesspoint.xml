@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.1">
+<itop_design version="3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://rudnerbjoern.github.io/iTop-schema/3.2/itop_design.xsd">
     <!--
     * @copyright   Copyright (C) 2024 Björn Rudner
     * @license     https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -26,7 +26,6 @@
                 <style>
                     <icon>images/wifi-router_256.png</icon>
                 </style>
-                <icon>images/wifi-router.png</icon>
                 <reconciliation>
                     <attributes>
                         <attribute id="name" />
