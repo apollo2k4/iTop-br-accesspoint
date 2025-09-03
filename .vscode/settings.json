@@ -6,6 +6,7 @@
         "autoincrement",
         "baseinfo",
         "bizmodel",
+        "Combodo",
         "connectablecis",
         "criticity",
         "dashlet",
