@@ -1,6 +1,6 @@
 # iTop-br-accesspoint
 
-Copyright (c) 2024 Björn Rudner
+Copyright (c) 2024-2025 Björn Rudner
 [![License](https://img.shields.io/github/license/rudnerbjoern/iTop-br-accesspoint)](https://github.com/rudnerbjoern/iTop-br-accesspoint/blob/main/LICENSE)
 
 ## What?
@@ -25,7 +25,7 @@ The branch [main](https://github.com/rudnerbjoern/iTop-br-accesspoint/tree/main)
 
 Versions starting with 2.7.x are kept compatible to iTop 2.7
 
-The extension was tested on iTop 2.7.10 and 3.1.1
+The extension was tested on iTop 2.7.10 and 3.2.2
 
 ## Attribution
 
