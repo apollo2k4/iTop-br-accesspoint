@@ -61,7 +61,66 @@
                     <target_attcode>name</target_attcode>
                 </field>
             </fields>
+            <event_listeners>
+                <event_listener id="EvtSetInitialAccessPointAttributeFlags">
+                    <event>EVENT_DB_SET_INITIAL_ATTRIBUTES_FLAGS</event>
+                    <rank>10</rank>
+                    <callback>EvtSetInitialAccessPointAttributeFlags</callback>
+                </event_listener>
+                <event_listener id="EvtSetAccessPointAttributeFlags">
+                    <event>EVENT_DB_SET_ATTRIBUTES_FLAGS</event>
+                    <rank>10</rank>
+                    <callback>EvtSetAccessPointAttributeFlags</callback>
+                </event_listener>
+                <event_listener id="EvtBeforeAccessPointWrite">
+                    <event>EVENT_DB_BEFORE_WRITE</event>
+                    <rank>10</rank>
+                    <callback>EvtBeforeAccessPointWrite</callback>
+                </event_listener>
+            </event_listeners>
             <methods>
+                <method id="EvtSetInitialAccessPointAttributeFlags">
+                    <static>false</static>
+                    <access>public</access>
+                    <type>EventListener</type>
+                    <code><![CDATA[
+    public function EvtSetInitialAccessPointAttributeFlags(Combodo\iTop\Service\Events\EventData $oEventData)
+    {
+        $this->ForceInitialAttributeFlags('networkdevicetype_id', OPT_ATT_READONLY);
+    }
+  ]]></code>
+                </method>
+                <method id="EvtSetAccessPointAttributeFlags">
+                    <static>false</static>
+                    <access>public</access>
+                    <type>EventListener</type>
+                    <code><![CDATA[
+    public function EvtSetAccessPointAttributeFlags(Combodo\iTop\Service\Events\EventData $oEventData)
+    {
+        $this->ForceAttributeFlags('networkdevicetype_id', OPT_ATT_READONLY);
+    }
+  ]]></code>
+                </method>
+                <method id="EvtBeforeAccessPointWrite">
+                    <static>false</static>
+                    <access>public</access>
+                    <type>EventListener</type>
+                    <code><![CDATA[
+    public function EvtBeforeAccessPointWrite(Combodo\iTop\Service\Events\EventData $oEventData)
+    {
+        if ($oEventData->Get('is_new'))
+        {
+            // get NetworkDeviceType "Access Point"
+            $oSearch = DBObjectSearch::FromOQL('SELECT NetworkDeviceType WHERE name = "Access Point"');
+            $oSet = new DBObjectSet($oSearch);
+            $oAccessPoint = $oSet->Fetch();
+            if (is_object($oAccessPoint)) {
+                $this->Set('networkdevicetype_id', $oAccessPoint->GetKey());
+            }
+        }
+    }
+  ]]></code>
+                </method>
                 <method id="PrefillCreationForm">
                     <static>false</static>
                     <access>public</access>
@@ -77,52 +136,6 @@
         $this->Set('networkdevicetype_id', $oAccessPoint->GetKey());
     }
     return true;
-}]]>
-                    </code>
-                </method>
-                <method id="GetAttributeFlags">
-                    <static>false</static>
-                    <access>public</access>
-                    <type>Overload-DBObject</type>
-                    <code>
-                        <![CDATA[public function GetAttributeFlags($sAttCode, &$aReasons = array(), $sTargetState = '')
-{
-    // Force the NetworkDeviceType field to be read-only, preventing it to be changed
-    if (($sAttCode == 'networkdevicetype_id'))
-        return(OPT_ATT_READONLY | parent::GetAttributeFlags($sAttCode, $aReasons, $sTargetState));
-    return parent::GetAttributeFlags($sAttCode, $aReasons, $sTargetState);
-}]]>
-                    </code>
-                </method>
-                <method id="GetInitialStateAttributeFlags">
-                    <static>false</static>
-                    <access>public</access>
-                    <type>Overload-DBObject</type>
-                    <code>
-                        <![CDATA[public function GetInitialStateAttributeFlags($sAttCode, &$aReasons = array())
-{
-    // Force the NetworkDeviceType field to be read-only, preventing it to be changed
-    if (($sAttCode == 'networkdevicetype_id'))
-        return(OPT_ATT_READONLY | parent::GetInitialStateAttributeFlags($sAttCode, $aReasons));
-    return parent::GetInitialStateAttributeFlags($sAttCode, $aReasons);
-}]]>
-                    </code>
-                </method>
-                <method id="OnInsert">
-                    <static>false</static>
-                    <access>public</access>
-                    <type>Overload-DBObject</type>
-                    <code>
-                        <![CDATA[public function OnInsert()
-{
-    // get NetworkDeviceType "Access Point"
-    $oSearch = DBObjectSearch::FromOQL('SELECT NetworkDeviceType WHERE name = "Access Point"');
-    $oSet = new DBObjectSet($oSearch);
-    $oAccessPoint = $oSet->Fetch();
-    if (is_object($oAccessPoint)) {
-        $this->Set('networkdevicetype_id', $oAccessPoint->GetKey());
-    }
-    parent::OnInsert();
 }]]>
                     </code>
                 </method>

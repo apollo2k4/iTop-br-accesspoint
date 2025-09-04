@@ -6,6 +6,7 @@
         "autoincrement",
         "baseinfo",
         "bizmodel",
+        "Combodo",
         "connectablecis",
         "criticity",
         "dashlet",
@@ -29,5 +30,8 @@
         "sitetag",
         "teemip",
         "wifi"
-    ]
+    ],
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "editor.formatOnPaste": true
 }
