@@ -62,51 +62,51 @@
                 </field>
             </fields>
             <event_listeners>
-                <event_listener id="EvtSetInitialAccessPointAttributeFlags">
+                <event_listener id="OnAccessPointSetInitialAttributesFlags">
                     <event>EVENT_DB_SET_INITIAL_ATTRIBUTES_FLAGS</event>
                     <rank>10</rank>
-                    <callback>EvtSetInitialAccessPointAttributeFlags</callback>
+                    <callback>OnAccessPointSetInitialAttributesFlags</callback>
                 </event_listener>
-                <event_listener id="EvtSetAccessPointAttributeFlags">
+                <event_listener id="OnAccessPointSetAttributesFlags">
                     <event>EVENT_DB_SET_ATTRIBUTES_FLAGS</event>
                     <rank>10</rank>
-                    <callback>EvtSetAccessPointAttributeFlags</callback>
+                    <callback>OnAccessPointSetAttributesFlags</callback>
                 </event_listener>
-                <event_listener id="EvtBeforeAccessPointWrite">
+                <event_listener id="OnAccessPointBeforeWrite">
                     <event>EVENT_DB_BEFORE_WRITE</event>
                     <rank>10</rank>
-                    <callback>EvtBeforeAccessPointWrite</callback>
+                    <callback>OnAccessPointBeforeWrite</callback>
                 </event_listener>
             </event_listeners>
             <methods>
-                <method id="EvtSetInitialAccessPointAttributeFlags">
+                <method id="OnAccessPointSetInitialAttributesFlags">
                     <static>false</static>
                     <access>public</access>
                     <type>EventListener</type>
                     <code><![CDATA[
-    public function EvtSetInitialAccessPointAttributeFlags(Combodo\iTop\Service\Events\EventData $oEventData)
+    public function OnAccessPointSetInitialAttributesFlags(Combodo\iTop\Service\Events\EventData $oEventData)
     {
         $this->ForceInitialAttributeFlags('networkdevicetype_id', OPT_ATT_READONLY);
     }
   ]]></code>
                 </method>
-                <method id="EvtSetAccessPointAttributeFlags">
+                <method id="OnAccessPointSetAttributesFlags">
                     <static>false</static>
                     <access>public</access>
                     <type>EventListener</type>
                     <code><![CDATA[
-    public function EvtSetAccessPointAttributeFlags(Combodo\iTop\Service\Events\EventData $oEventData)
+    public function OnAccessPointSetAttributesFlags(Combodo\iTop\Service\Events\EventData $oEventData)
     {
         $this->ForceAttributeFlags('networkdevicetype_id', OPT_ATT_READONLY);
     }
   ]]></code>
                 </method>
-                <method id="EvtBeforeAccessPointWrite">
+                <method id="OnAccessPointBeforeWrite">
                     <static>false</static>
                     <access>public</access>
                     <type>EventListener</type>
                     <code><![CDATA[
-    public function EvtBeforeAccessPointWrite(Combodo\iTop\Service\Events\EventData $oEventData)
+    public function OnAccessPointBeforeWrite(Combodo\iTop\Service\Events\EventData $oEventData)
     {
         if ($oEventData->Get('is_new'))
         {
@@ -128,6 +128,15 @@
                     <code>
                         <![CDATA[public function PrefillCreationForm(&$aContextParam)
 {
+    parent::PrefillCreationForm($aContextParam);
+
+    // Get the currently authenticated iTop user object (may be null in some contexts)
+    $oUser = UserRights::GetUserObject();
+    if ($oUser !== null) {
+        // Assign the user's organization to the new record
+        $this->Set('org_id', (int) $oUser->Get('org_id'));
+    }
+
     // get NetworkDeviceType "Access Point"
     $oSearch = DBObjectSearch::FromOQL('SELECT NetworkDeviceType WHERE name = "Access Point"');
     $oSet = new DBObjectSet($oSearch);
@@ -135,7 +144,6 @@
     if (is_object($oAccessPoint)) {
         $this->Set('networkdevicetype_id', $oAccessPoint->GetKey());
     }
-    return true;
 }]]>
                     </code>
                 </method>
